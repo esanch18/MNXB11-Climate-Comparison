@@ -54,12 +54,13 @@ annualtemp::annualtemp(const std::string& areaName,const std::string& file) : na
         years.push_back(years_temp[i]);
         meanTemp.push_back(year_sum[i] / count[i]);
     }
-
+/*
     size_t limit = 66;
     for (size_t i = 50; i < limit; ++i) {
         std::cout << "Year: " << years[i] << " | Mean Temp: " << meanTemp[i] << " °C" << std::endl;
+        
 }
-
+*/
 }
 
 void annualtemp::plotTemp(const std::string& filename) const {
@@ -70,14 +71,14 @@ void annualtemp::plotTemp(const std::string& filename) const {
     int maxYear = years.back() + 1;
     int nBins = maxYear - minYear;
 
-    TH1D *hist = new TH1D("hist", "Mean Annual Temperature [°C]", nBins, minYear, maxYear);
+    TH1D *hist = new TH1D("hist", "Mean Annual Temperature [#circC]", nBins, minYear, maxYear);
 
     for(size_t i = 0; i < years.size(); ++i) {
         int bin = hist->FindBin(years[i]);
         hist->SetBinContent(bin, meanTemp[i]);
     }
 
-    hist->SetTitle("Mean annual temperature;" "Year; Temperature[°C]");
+    hist->SetTitle("Mean annual temperature;" "Year; Temperature[#circC]");
     hist->SetStats(0);
     hist->SetFillColor(kAzure + 4);
     hist->Draw("HIST");
@@ -110,7 +111,7 @@ void annualtemp::plotTemp(const std::string& filename) const {
             }
         }
         if (!exists) continue;
-        
+
         double sum = 0.0;
         int count = 0;
         for(int w = -halfsize; w <= halfsize; ++w) {
@@ -161,8 +162,8 @@ void annualtemp::plotTempComp(const annualtemp& other, const std::string& filena
 
     TCanvas *canvas = new TCanvas("canvas_comp", "Temperature comparison", 1000, 600);
     canvas->SetGrid();
-    TH1D *hist1 = new TH1D("hist1", "Mean Annual Temperature [°C]", nBins, startYear, endYear);
-    TH1D *hist2 = new TH1D("hist2", "Mean Annual Temperature [°C]", nBins, startYear, endYear);
+    TH1D *hist1 = new TH1D("hist1", "Mean Annual Temperature [#circC]", nBins, startYear, endYear);
+    TH1D *hist2 = new TH1D("hist2", "Mean Annual Temperature [#circC]", nBins, startYear, endYear);
 
     for (size_t i = 0; i< years.size(); ++i) {
         if (years[i] >= startYear && years[i] <=endYear){
@@ -181,7 +182,7 @@ void annualtemp::plotTempComp(const annualtemp& other, const std::string& filena
     hist1->SetStats(0);
     hist1->SetLineColor(kAzure);
     hist1->SetLineWidth(2);
-    hist1->SetTitle("Mean annual temperature comparison;""Year; Temperature[°C]");
+    hist1->SetTitle("Mean annual temperature comparison;""Year; Temperature[#circC]");
 
     hist2->SetStats(0);
     hist2->SetLineColor(kRed);
